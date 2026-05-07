@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowchart Program Matriks C++</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #f0f0f0;
+    font-family: Arial, sans-serif;
+    padding: 24px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #111;
+    letter-spacing: 1px;
+  }
+  .header p {
+    font-size: 13px;
+    color: #555;
+    margin-top: 4px;
+  }
+
+  .btn-download {
+    display: block;
+    margin: 0 auto 24px;
+    padding: 10px 32px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+  }
+  .btn-download:hover { background: #333; }
+
+  /* LEGEND */
+  .legend {
+    background: #fff;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    padding: 14px 20px;
+    max-width: 900px;
+    margin: 0 auto 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: center;
+    align-items: center;
+  }
+  .legend-heading {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    color: #333;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    max-width: 900px;
+    margin: 0 auto 10px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #111;
+    background: #e8e8e8;
+    border-left: 4px solid #111;
+    padding: 7px 14px;
+    border-radius: 0 6px 6px 0;
+    letter-spacing: 0.5px;
+  }
+
+  /* CANVAS WRAPPERS */
+  .canvas-wrap {
+    background: #fff;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    max-width: 900px;
+    margin: 0 auto 24px;
+    overflow-x: auto;
+    padding: 10px;
+  }
+  canvas { display: block; margin: 0 auto; }
+
+  .module-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto 24px;
+  }
+  .module-wrap {
+    background: #fff;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    overflow-x: auto;
+    padding: 10px;
+  }
+  .module-wrap-full {
+    grid-column: 1 / -1;
+  }
+  .module-title {
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #111;
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ddd;
+    letter-spacing: 0.5px;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 11px;
+    color: #999;
+    padding: 12px 0 6px;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 640px) {
+    .module-grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>FLOWCHART PROGRAM MATRIKS C++</h1>
+  <p>Rancangan Program dengan Menu & Modul-Modul Fungsi Matriks</p>
+</div>
+
+<button class="btn-download" onclick="downloadAll()">⬇ Download Semua sebagai PNG</button>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-heading">KETERANGAN SIMBOL FLOWCHART (STANDAR ANSI/ISO)</div>
+
+  <div class="legend-item">
+    <svg width="64" height="26">
+      <rect x="2" y="3" width="60" height="20" rx="10" fill="white" stroke="black" stroke-width="1.5"/>
+      <text x="32" y="15" text-anchor="middle" font-size="9" fill="black" font-family="Arial">Terminal</text>
+    </svg>
+    Terminal (Start / End / Return)
+  </div>
+
+  <div class="legend-item">
+    <svg width="64" height="26">
+      <rect x="2" y="3" width="60" height="20" fill="white" stroke="black" stroke-width="1.5"/>
+      <text x="32" y="15" text-anchor="middle" font-size="9" fill="black" font-family="Arial">Proses</text>
+    </svg>
+    Process (Proses / Assignment)
+  </div>
+
+  <div class="legend-item">
+    <svg width="64" height="28">
+      <polygon points="32,2 62,14 32,26 2,14" fill="white" stroke="black" stroke-width="1.5"/>
+      <text x="32" y="18" text-anchor="middle" font-size="9" fill="black" font-family="Arial">Kondisi</text>
+    </svg>
+    Decision (Keputusan / Kondisi)
+  </div>
+
+  <div class="legend-item">
+    <svg width="64" height="26">
+      <polygon points="12,3 62,3 52,23 2,23" fill="white" stroke="black" stroke-width="1.5"/>
+      <text x="32" y="15" text-anchor="middle" font-size="9" fill="black" font-family="Arial">I / O</text>
+    </svg>
+    Input / Output
+  </div>
+
+  <div class="legend-item">
+    <svg width="64" height="26">
+      <rect x="2" y="3" width="60" height="20" fill="white" stroke="black" stroke-width="1.5"/>
+      <line x1="10" y1="3" x2="10" y2="23" stroke="black" stroke-width="1.5"/>
+      <line x1="54" y1="3" x2="54" y2="23" stroke="black" stroke-width="1.5"/>
+      <text x="32" y="15" text-anchor="middle" font-size="9" fill="black" font-family="Arial">Modul</text>
+    </svg>
+    Predefined Process (Sub-Modul)
+  </div>
+
+  <div class="legend-item">
+    <svg width="28" height="28">
+      <circle cx="14" cy="14" r="11" fill="white" stroke="black" stroke-width="1.5"/>
+      <text x="14" y="18" text-anchor="middle" font-size="10" fill="black" font-family="Arial">A</text>
+    </svg>
+    On-page Connector
+  </div>
+
+  <div class="legend-item">
+    <svg width="44" height="16">
+      <line x1="0" y1="8" x2="36" y2="8" stroke="black" stroke-width="1.5"/>
+      <polygon points="36,4 44,8 36,12" fill="black"/>
+    </svg>
+    Flowline (Arah Alur)
+  </div>
+
+  <div class="legend-item">
+    <svg width="64" height="26">
+      <rect x="2" y="3" width="60" height="20" fill="white" stroke="black" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <text x="32" y="15" text-anchor="middle" font-size="9" fill="black" font-family="Arial">⚠ Warning</text>
+    </svg>
+    Warning / Pesan Error
+  </div>
+</div>
+
+<!-- MAIN FLOWCHART -->
+<div class="section-label">FLOWCHART UTAMA — PROGRAM MENU MATRIKS</div>
+<div class="canvas-wrap">
+  <canvas id="mainCanvas" width="820" height="2620"></canvas>
+</div>
+
+<!-- MODULES -->
+<div class="section-label">FLOWCHART MODUL-MODUL FUNGSI</div>
+<div class="module-grid">
+
+  <div class="module-wrap">
+    <div class="module-title">MODUL 1 · Buat Matriks</div>
+    <canvas id="mod1" width="420" height="620"></canvas>
+  </div>
+
+  <div class="module-wrap">
+    <div class="module-title">MODUL 2 · Cetak Matriks</div>
+    <canvas id="mod2" width="420" height="560"></canvas>
+  </div>
+
+  <div class="module-wrap">
+    <div class="module-title">MODUL 3 · Tambah Matriks</div>
+    <canvas id="mod3" width="420" height="680"></canvas>
+  </div>
+
+  <div class="module-wrap">
+    <div class="module-title">MODUL 4 · Kali Matriks</div>
+    <canvas id="mod4" width="420" height="700"></canvas>
+  </div>
+
+  <div class="module-wrap">
+    <div class="module-title">MODUL 5 · Diagonal Matriks</div>
+    <canvas id="mod5" width="420" height="580"></canvas>
+  </div>
+
+  <div class="module-wrap">
+    <div class="module-title">MODUL 6 · Segitiga Bawah</div>
+    <canvas id="mod6" width="420" height="620"></canvas>
+  </div>
+
+  <div class="module-wrap module-wrap-full" style="max-width:430px; margin:0 auto;">
+    <div class="module-title">MODUL 7 · Segitiga Atas</div>
+    <canvas id="mod7" width="420" height="620"></canvas>
+  </div>
+
+</div>
+
+<footer>Flowchart Program Matriks C++ · Standar Simbol ANSI/ISO · Satu File HTML</footer>
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
+<script>
+/* ─────────────────────────────────────────────
+   DRAWING TOOLKIT
+───────────────────────────────────────────── */
+function Drawer(canvasId) {
+  this.cv = document.getElementById(canvasId);
+  this.g  = this.cv.getContext('2d');
+  /* fill canvas white */
+  this.g.fillStyle = '#ffffff';
+  this.g.fillRect(0, 0, this.cv.width, this.cv.height);
+}
+
+/* ── text helper (multi-line) ── */
+Drawer.prototype.text = function(txt, cx, cy, sz, bold) {
+  var g = this.g;
+  g.fillStyle = '#000';
+  g.font = (bold ? 'bold ' : '') + (sz || 11) + 'px Arial';
+  g.textAlign = 'center';
+  g.textBaseline = 'middle';
+  var lines = String(txt).split('\n');
+  var lh = (sz || 11) + 4;
+  var sy = cy - (lines.length - 1) * lh / 2;
+  lines.forEach(function(l, i) { g.fillText(l, cx, sy + i * lh); });
+};
+
+/* ── label near arrow ── */
+Drawer.prototype.label = function(x, y, txt, align) {
+  var g = this.g;
+  g.fillStyle = '#000';
+  g.font = '10px Arial';
+  g.textAlign = align || 'center';
+  g.textBaseline = 'middle';
+  g.fillText(txt, x, y);
+};
+
+/* ── arrowhead ── */
+Drawer.prototype._head = function(x2, y2, angle) {
+  var g = this.g, s = 8;
+  g.fillStyle = '#000';
+  g.beginPath();
+  g.moveTo(x2, y2);
+  g.lineTo(x2 - s * Math.cos(angle - 0.38), y2 - s * Math.sin(angle - 0.38));
+  g.lineTo(x2 - s * Math.cos(angle + 0.38), y2 - s * Math.sin(angle + 0.38));
+  g.closePath();
+  g.fill();
+};
+
+/* ── straight arrow ── */
+Drawer.prototype.arrow = function(x1, y1, x2, y2) {
+  var g = this.g;
+  g.strokeStyle = '#000';
+  g.lineWidth = 1.4;
+  g.setLineDash([]);
+  g.beginPath();
+  g.moveTo(x1, y1); g.lineTo(x2, y2);
+  g.stroke();
+  this._head(x2, y2, Math.atan2(y2 - y1, x2 - x1));
+};
+
+/* ── polyline arrow (elbow) ── */
+Drawer.prototype.poly = function(pts) {
+  var g = this.g;
+  g.strokeStyle = '#000';
+  g.lineWidth = 1.4;
+  g.setLineDash([]);
+  g.beginPath();
+  g.moveTo(pts[0][0], pts[0][1]);
+  for (var i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]);
+  g.stroke();
+  var n = pts.length;
+  this._head(pts[n-1][0], pts[n-1][1], Math.atan2(pts[n-1][1]-pts[n-2][1], pts[n-1][0]-pts[n-2][0]));
+};
+
+/* ── shapes ── */
+Drawer.prototype._base = function(dash) {
+  var g = this.g;
+  g.fillStyle = '#fff';
+  g.strokeStyle = '#000';
+  g.lineWidth = 1.6;
+  g.setLineDash(dash || []);
+};
+
+/* Terminal – rounded rect */
+Drawer.prototype.terminal = function(cx, cy, txt, w, h) {
+  w = w||180; h = h||38;
+  var g = this.g, r = h/2;
+  this._base();
+  g.beginPath();
+  g.moveTo(cx - w/2 + r, cy - h/2);
+  g.lineTo(cx + w/2 - r, cy - h/2);
+  g.arcTo(cx+w/2,cy-h/2, cx+w/2,cy+h/2, r);
+  g.lineTo(cx + w/2 - r, cy + h/2);
+  g.arcTo(cx+w/2,cy+h/2, cx-w/2,cy+h/2, r);
+  g.lineTo(cx - w/2 + r, cy + h/2);
+  g.arcTo(cx-w/2,cy+h/2, cx-w/2,cy-h/2, r);
+  g.lineTo(cx - w/2 + r, cy - h/2);
+  g.arcTo(cx-w/2,cy-h/2, cx+w/2,cy-h/2, r);
+  g.closePath(); g.fill(); g.stroke();
+  this.text(txt, cx, cy, 11, true);
+};
+
+/* Process – rectangle */
+Drawer.prototype.process = function(cx, cy, txt, w, h) {
+  w = w||200; h = h||42;
+  var g = this.g;
+  this._base();
+  g.beginPath();
+  g.rect(cx-w/2, cy-h/2, w, h);
+  g.fill(); g.stroke();
+  this.text(txt, cx, cy, 10.5);
+};
+
+/* Decision – diamond */
+Drawer.prototype.decision = function(cx, cy, txt, w, h) {
+  w = w||190; h = h||58;
+  var g = this.g;
+  this._base();
+  g.beginPath();
+  g.moveTo(cx, cy-h/2);
+  g.lineTo(cx+w/2, cy);
+  g.lineTo(cx, cy+h/2);
+  g.lineTo(cx-w/2, cy);
+  g.closePath(); g.fill(); g.stroke();
+  this.text(txt, cx, cy, 10.5);
+};
+
+/* Input/Output – parallelogram */
+Drawer.prototype.io = function(cx, cy, txt, w, h) {
+  w = w||220; h = h||40;
+  var g = this.g, sk = 14;
+  this._base();
+  g.beginPath();
+  g.moveTo(cx-w/2+sk, cy-h/2);
+  g.lineTo(cx+w/2+sk, cy-h/2);
+  g.lineTo(cx+w/2-sk, cy+h/2);
+  g.lineTo(cx-w/2-sk, cy+h/2);
+  g.closePath(); g.fill(); g.stroke();
+  this.text(txt, cx, cy, 10.5);
+};
+
+/* Predefined process – double-border rect */
+Drawer.prototype.subproc = function(cx, cy, txt, w, h) {
+  w = w||180; h = h||40;
+  var g = this.g, b = 8;
+  this._base();
+  g.beginPath(); g.rect(cx-w/2, cy-h/2, w, h); g.fill(); g.stroke();
+  g.beginPath();
+  g.moveTo(cx-w/2+b, cy-h/2); g.lineTo(cx-w/2+b, cy+h/2);
+  g.moveTo(cx+w/2-b, cy-h/2); g.lineTo(cx+w/2-b, cy+h/2);
+  g.stroke();
+  this.text(txt, cx, cy, 10.5);
+};
+
+/* Connector – circle */
+Drawer.prototype.connector = function(cx, cy, lbl) {
+  var g = this.g, r = 16;
+  this._base();
+  g.beginPath(); g.arc(cx, cy, r, 0, Math.PI*2); g.fill(); g.stroke();
+  this.text(lbl, cx, cy, 10, true);
+};
+
+/* Warning – dashed rect */
+Drawer.prototype.warning = function(cx, cy, txt, w, h) {
+  w = w||190; h = h||44;
+  var g = this.g;
+  g.fillStyle = '#fff';
+  g.strokeStyle = '#000';
+  g.lineWidth = 1.6;
+  g.setLineDash([5, 3]);
+  g.beginPath(); g.rect(cx-w/2, cy-h/2, w, h); g.fill(); g.stroke();
+  g.setLineDash([]);
+  this.text(txt, cx, cy, 10.5);
+};
+
+/* ─────────────────────────────────────────────
+   MAIN FLOWCHART
+───────────────────────────────────────────── */
+(function(){
+  var d = new Drawer('mainCanvas');
+  var cx = 400; /* center */
+  var RX = 680; /* right branch x */
+  var LX = 90;  /* left loop x */
+
+  /* All Y positions */
+  var Y = {};
+  Y.start    = 50;
+  Y.init     = 130;
+  Y.menu     = 210;
+  Y.input    = 290;
+  Y.connA    = 360;
+  Y.dExit    = 440;
+  Y.dPil1    = 540;
+  Y.dValid   = 640;
+  Y.dCreated = 740;
+  Y.dPil2    = 845;
+  Y.dPil3    = 950;
+  Y.dPil4    = 1055;
+  Y.dPil5    = 1160;
+  Y.dPil6    = 1265;
+  Y.dPil7    = 1370;
+  Y.connB    = 1470;
+  /* right-side sub Y matches decision Y */
+  /* loop right rail Y */
+  var RAIL_Y = 1580;
+  var RAIL_X = 760;
+
+  /* ── DRAW SHAPES ── */
+  d.terminal(cx, Y.start, 'START', 130, 36);
+  d.arrow(cx, Y.start+18, cx, Y.init-21);
+
+  d.process(cx, Y.init, 'Deklarasi: A[3×4], B[3×4], C[3×4]\nD[2×3], E[2×4]  |  isCreated = false', 340, 50);
+  d.arrow(cx, Y.init+25, cx, Y.menu-20);
+
+  d.io(cx, Y.menu, 'Tampilkan Menu Pilihan (1 – 8)', 290, 38);
+  d.arrow(cx, Y.menu+19, cx, Y.input-20);
+
+  d.io(cx, Y.input, 'Input: pilihan', 190, 38);
+  d.arrow(cx, Y.input+19, cx, Y.connA-16);
+
+  d.connector(cx, Y.connA, 'A');
+  d.arrow(cx, Y.connA+16, cx, Y.dExit-29);
+
+  /* ── pilihan == 8 ── */
+  d.decision(cx, Y.dExit, 'pilihan == 8 ?', 200, 56);
+  d.arrow(cx+100, Y.dExit, RX-90, Y.dExit);
+  d.label(cx+100+((RX-90-cx-100)/2), Y.dExit-9, 'Ya');
+  d.terminal(RX, Y.dExit, 'END', 100, 36);
+  d.arrow(cx, Y.dExit+28, cx, Y.dPil1-29);
+  d.label(cx+6, Y.dExit+28+15, 'Tidak', 'left');
+
+  /* ── pilihan == 1 ── */
+  d.decision(cx, Y.dPil1, 'pilihan == 1 ?', 200, 52);
+  d.arrow(cx+100, Y.dPil1, RX-90, Y.dPil1);
+  d.label(cx+100+((RX-90-cx-100)/2), Y.dPil1-9, 'Ya');
+  d.subproc(RX, Y.dPil1, 'BuatMatriks()', 170, 38);
+  d.arrow(RX, Y.dPil1+19, RX, Y.dPil1+58);
+  d.process(RX, Y.dPil1+78, 'isCreated = true', 170, 38);
+  /* sub → right rail */
+  d.poly([[RX, Y.dPil1+97],[RX, RAIL_Y],[cx+30, RAIL_Y]]);
+
+  d.arrow(cx, Y.dPil1+26, cx, Y.dValid-29);
+  d.label(cx+6, Y.dPil1+26+16, 'Tidak', 'left');
+
+  /* ── 2 ≤ pilihan ≤ 7 (valid) ── */
+  d.decision(cx, Y.dValid, '2 ≤ pilihan ≤ 7 ?', 220, 52);
+  d.arrow(cx+110, Y.dValid, RX-95, Y.dValid);
+  d.label(cx+110+((RX-95-cx-110)/2), Y.dValid-9, 'Tidak');
+  d.warning(RX, Y.dValid, '⚠  Pilihan tidak valid!\nMasukkan angka 1 – 8', 210, 46);
+  /* warning → loop back to menu */
+  d.poly([[RX, Y.dValid-23],[RX, Y.dValid-70],[cx+145, Y.dValid-70]]);
+  d.label(RX+10, Y.dValid-46, '← Kembali ke Menu', 'left');
+
+  d.arrow(cx, Y.dValid+26, cx, Y.dCreated-29);
+  d.label(cx+6, Y.dValid+26+16, 'Ya', 'left');
+
+  /* ── isCreated ── */
+  d.decision(cx, Y.dCreated, 'isCreated == true ?', 230, 52);
+  d.arrow(cx+115, Y.dCreated, RX-95, Y.dCreated);
+  d.label(cx+115+((RX-95-cx-115)/2), Y.dCreated-9, 'Tidak');
+  d.warning(RX, Y.dCreated, '⚠  Matriks belum dibuat!\nSilakan pilih menu 1 dahulu', 220, 46);
+  d.poly([[RX, Y.dCreated-23],[RX, Y.dCreated-70],[cx+115, Y.dCreated-70]]);
+  d.label(RX+10, Y.dCreated-46, '← Kembali ke Menu', 'left');
+
+  d.arrow(cx, Y.dCreated+26, cx, Y.dPil2-29);
+  d.label(cx+6, Y.dCreated+26+16, 'Ya', 'left');
+
+  /* helper: menu item decision */
+  function menuItem(dy, cond, subName) {
+    d.decision(cx, dy, cond, 200, 52);
+    d.arrow(cx+100, dy, RX-85, dy);
+    d.label(cx+100+((RX-85-cx-100)/2), dy-9, 'Ya');
+    d.subproc(RX, dy, subName, 170, 38);
+    d.poly([[RX, dy+19],[RX, RAIL_Y],[cx+30, RAIL_Y]]);
+    d.arrow(cx, dy+26, cx, dy+100-29);
+    d.label(cx+6, dy+26+16, 'Tidak', 'left');
+  }
+
+  menuItem(Y.dPil2, 'pilihan == 2 ?', 'CetakMatriks()');
+  menuItem(Y.dPil3, 'pilihan == 3 ?', 'TambahMatriks()');
+  menuItem(Y.dPil4, 'pilihan == 4 ?', 'KaliMatriks()');
+  menuItem(Y.dPil5, 'pilihan == 5 ?', 'DiagonalMatriks()');
+  menuItem(Y.dPil6, 'pilihan == 6 ?', 'SegitigaBawah()');
+
+  /* last: pilihan == 7 (no "Tidak" branch needed) */
+  d.decision(cx, Y.dPil7, 'pilihan == 7 ?', 200, 52);
+  d.arrow(cx+100, Y.dPil7, RX-85, Y.dPil7);
+  d.label(cx+100+((RX-85-cx-100)/2), Y.dPil7-9, 'Ya');
+  d.subproc(RX, Y.dPil7, 'SegitigaAtas()', 170, 38);
+  d.poly([[RX, Y.dPil7+19],[RX, RAIL_Y],[cx+30, RAIL_Y]]);
+
+  /* Tidak from pilihan==7 → connB */
+  d.arrow(cx, Y.dPil7+26, cx, Y.connB-16);
+  d.label(cx+6, Y.dPil7+26+14, 'Tidak', 'left');
+
+  /* Connector B */
+  d.connector(cx, Y.connB, 'B');
+
+  /* All sub-procs rail → connector B */
+  d.poly([[cx+30, RAIL_Y],[cx, RAIL_Y],[cx, Y.connB+16]]);
+  d.label(cx+80, RAIL_Y-10, 'Semua sub-proses selesai → kembali ke menu');
+
+  /* Connector B → loop left back to Menu */
+  d.poly([[cx-16, Y.connB],[LX, Y.connB],[LX, Y.menu],[cx-145, Y.menu]]);
+  d.label(LX-8, (Y.connB+Y.menu)/2, 'Loop', 'right');
+
+})();
+
+/* ─────────────────────────────────────────────
+   MODULE 1 – BUAT MATRIKS
+───────────────────────────────────────────── */
+(function(){
+  var d = new Drawer('mod1');
+  var cx = 210, y = 40, gap = 66;
+
+  var ys = [];
+  function next(){ ys.push(y); var v=y; y+=gap; return v; }
+
+  var y0  = next(); d.terminal(cx, y0, 'BuatMatriks()', 200, 36);
+  var y1  = next(); d.io(cx, y1, 'Input elemen A[3][4]', 240, 38);
+  var y2  = next(); d.process(cx, y2, 'Isi A[i][j] – loop i=0..2, j=0..3', 280, 40);
+  var y3  = next(); d.io(cx, y3, 'Input elemen B[3][4]', 240, 38);
+  var y4  = next(); d.process(cx, y4, 'Isi B[i][j] – loop i=0..2, j=0..3', 280, 40);
+  var y5  = next(); d.process(cx, y5, 'Init C[3×4]=0, D[2×3]=0, E[2×4]=0', 280, 40);
+  var y6  = next(); d.terminal(cx, y6, 'Return', 130, 36);
+
+  for(var i=0;i<ys.length-1;i++) d.arrow(cx, ys[i]+20, cx, ys[i+1]-20);
+})();
+
+/* ─────────────────────────────────────────────
+   MODULE 2 – CETAK MATRIKS
+───────────────────────────────────────────── */
+(function(){
+  var d = new Drawer('mod2');
+  var cx=210, RX=385;
+
+  d.terminal(cx, 40, 'CetakMatriks(mat, baris, kolom)', 280, 36);
+  d.arrow(cx,58,cx,103);
+  d.process(cx,123,'i = 0',120,36);
+  d.arrow(cx,141,cx,186);
+  d.decision(cx,213,'i < baris ?',170,52);
+  /* Tidak → Return */
+  d.arrow(cx+85,213,RX-50,213); d.label(cx+85+20,204,'Tidak');
+  d.terminal(RX,213,'Return',100,36);
+  /* Ya */
+  d.arrow(cx,239,cx,281); d.label(cx+6,255,'Ya','left');
+  d.process(cx,303,'j = 0',120,36);
+  d.arrow(cx,321,cx,363);
+  d.decision(cx,390,'j < kolom ?',170,52);
+  /* Tidak → i++ (loop left) */
+  d.poly([[cx-85,390],[50,390],[50,123],[cx-60,123]]);
+  d.label(38,260,'i++','right');
+  d.label(38,380,'Tidak','right');
+  /* Ya */
+  d.arrow(cx,416,cx,453); d.label(cx+6,432,'Ya','left');
+  d.io(cx,473,'Tampilkan mat[i][j]',230,36);
+  d.arrow(cx,491,cx,523);
+  d.process(cx,543,'j++',100,36);
+  /* j++ loop right */
+  d.poly([[cx+60,543],[370,543],[370,390],[cx+85,390]]);
+})();
+
+/* ─────────────────────────────────────────────
+   MODULE 3 – TAMBAH MATRIKS
+───────────────────────────────────────────── */
+(function(){
+  var d = new Drawer('mod3');
+  var cx=210;
+
+  d.terminal(cx,40,'TambahMatriks(A, B, C, r, c)',290,36);
+  d.arrow(cx,58,cx,100);
+  d.decision(cx,128,'dim(A) == dim(B) ?',210,52);
+  /* Tidak → warning */
+  d.arrow(cx+105,128,350,128); d.label(cx+105+30,119,'Tidak');
+  d.warning(375,128,'⚠  Dimensi\ntidak sama!',100,46);
+  d.arrow(375,105,375,62);
+  d.terminal(375,50,'Return',90,34);
+  /* Ya */
+  d.arrow(cx,154,cx,196); d.label(cx+6,170,'Ya','left');
+  d.process(cx,220,'i = 0',120,36);
+  d.arrow(cx,238,cx,280);
+  d.decision(cx,308,'i < baris ?',170,50);
+  /* Tidak → show result & return */
+  d.poly([[cx+85,308],[370,308],[370,590],[cx+110,590]]);
+  d.label(372,450,'Tidak','left');
+  /* Ya */
+  d.arrow(cx,333,cx,374); d.label(cx+6,350,'Ya','left');
+  d.process(cx,396,'j = 0',120,36);
+  d.arrow(cx,414,cx,456);
+  d.decision(cx,483,'j < kolom ?',170,50);
+  /* Tidak → i++ */
+  d.poly([[cx-85,483],[50,483],[50,220],[cx-60,220]]);
+  d.label(38,355,'i++','right');
+  /* Ya */
+  d.arrow(cx,509,cx,547); d.label(cx+6,524,'Ya','left');
+  d.process(cx,570,'C[i][j] = A[i][j] + B[i][j]',250,36);
+  d.arrow(cx,588,cx,620);
+  d.process(cx,640,'j++',100,36);
+  /* j++ loop right */
+  d.poly([[cx+60,640],[360,640],[360,483],[cx+85,483]]);
+
+  /* Tidak branch result */
+  d.poly([[cx+110,590],[cx+110,622],[cx-110,622],[cx-110,590]]);
+  d.io(cx,610,'Tampilkan Hasil C',220,36);
+  d.terminal(cx,660,'Return',130,36);
+  d.arrow(cx,628,cx,642);
+  d.arrow(cx,642+16,cx,660-18);
+})();
+
+/* ─────────────────────────────────────────────
+   MODULE 4 – KALI MATRIKS
+───────────────────────────────────────────── */
+(function(){
+  var d = new Drawer('mod4');
+  var cx=210;
+
+  d.terminal(cx,38,'KaliMatriks(A[3×4], D[2×3], E[2×4])',310,36);
+  d.arrow(cx,56,cx,100);
+  d.decision(cx,128,'kolom(A) == baris(D) ?',230,52);
+  d.arrow(cx+115,128,360,128); d.label(cx+115+20,119,'Tidak');
+  d.warning(382,128,'⚠  Dimensi\ntdk kompatibel',100,46);
+  d.arrow(382,105,382,58);
+  d.terminal(382,48,'Return',90,34);
+  d.arrow(cx,154,cx,196); d.label(cx+6,170,'Ya','left');
+  d.process(cx,220,'Init E[2][4] = 0  |  i = 0',250,38);
+  d.arrow(cx,239,cx,280);
+  d.decision(cx,308,'i < 2 (baris E) ?',210,52);
+  d.poly([[cx+105,308],[380,308],[380,600],[cx+110,600]]);
+  d.label(382,455,'Tidak','left');
+  d.arrow(cx,334,cx,374); d.label(cx+6,350,'Ya','left');
+  d.process(cx,396,'j = 0',120,36);
+  d.arrow(cx,414,cx,454);
+  d.decision(cx,482,'j < 4 (kolom E) ?',210,52);
+  /* Tidak j → i++ */
+  d.poly([[cx-105,482],[48,482],[48,220],[cx-125,220]]);
+  d.label(36,355,'i++','right');
+  d.label(36,472,'Tidak','right');
+  d.arrow(cx,508,cx,546); d.label(cx+6,522,'Ya','left');
+  d.process(cx,572,'k=0..2\nE[i][j] += A[i][k] * D[k][j]',250,48);
+  d.arrow(cx,596,cx,630);
+  d.process(cx,650,'j++',100,36);
+  d.poly([[cx+60,650],[360,650],[360,482],[cx+105,482]]);
+
+  /* after i loop done */
+  d.poly([[cx+110,600],[cx+110,630],[cx-110,630],[cx-110,618]]);
+  d.io(cx,616,'Tampilkan Hasil E',220,36);
+  d.arrow(cx,634,cx,665);
+  d.terminal(cx,680,'Return',130,36);
+})();
+
+/* ─────────────────────────────────────────────
+   MODULE 5 – DIAGONAL MATRIKS
+───────────────────────────────────────────── */
+(function(){
+  var d = new Drawer('mod5');
+  var cx=210;
+
+  d.terminal(cx,40,'DiagonalMatriks(mat, n)',240,36);
+  d.arrow(cx,58,cx,100);
+  d.decision(cx,128,'baris == kolom ? (n×n)',220,52);
+  d.arrow(cx+110,128,366,128); d.label(cx+110+18,119,'Tidak');
+  d.warning(385,128,'⚠  Bukan matriks\npersegi!',105,46);
+  d.arrow(385,105,385,58);
+  d.terminal(385,48,'Return',90,34);
+  d.arrow(cx,154,cx,196); d.label(cx+6,172,'Ya','left');
+  d.process(cx,220,'i = 0',120,36);
+  d.arrow(cx,238,cx,280);
+  d.decision(cx,308,'i < n ?',140,50);
+  /* Tidak → Return */
+  d.poly([[cx+70,308],[360,308],[360,468],[cx+65,468]]);
+  d.label(362,390,'Tidak','left');
+  d.arrow(cx,333,cx,374); d.label(cx+6,350,'Ya','left');
+  d.io(cx,396,'Tampilkan mat[i][i]',230,36);
+  d.arrow(cx,414,cx,448);
+  d.process(cx,468,'i++',100,36);
+  d.poly([[cx+50,468],[340,468],[340,308],[cx+70,308]]);
+
+  /* Tidak → Return */
+  d.poly([[cx+65,468],[cx+65,510],[cx-65,510],[cx-65,498]]);
+  d.terminal(cx,505,'Return',130,36);
+  d.arrow(cx,488+16,cx,505-18);
+})();
+
+/* ─────────────────────────────────────────────
+   MODULE 6 – SEGITIGA BAWAH
+───────────────────────────────────────────── */
+(function(){
+  var d = new Drawer('mod6');
+  var cx=210;
+
+  d.terminal(cx,40,'SegitigaBawah(mat, n)',240,36);
+  d.arrow(cx,58,cx,100);
+  d.decision(cx,128,'baris == kolom ?',195,52);
+  d.arrow(cx+98,128,362,128); d.label(cx+98+18,119,'Tidak');
+  d.warning(385,128,'⚠  Bukan matriks\npersegi!',105,46);
+  d.arrow(385,105,385,58);
+  d.terminal(385,48,'Return',90,34);
+  d.arrow(cx,154,cx,196); d.label(cx+6,172,'Ya','left');
+  d.process(cx,220,'i = 0',120,36);
+  d.arrow(cx,238,cx,280);
+  d.decision(cx,308,'i < n ?',140,50);
+  d.poly([[cx+70,308],[355,308],[355,565],[cx+65,565]]);
+  d.label(357,435,'Tidak','left');
+  d.arrow(cx,333,cx,374); d.label(cx+6,350,'Ya','left');
+  d.process(cx,396,'j = 0',120,36);
+  d.arrow(cx,414,cx,454);
+  d.decision(cx,482,'j <= i ?',150,50);
+  /* Tidak → i++ */
+  d.poly([[cx-75,482],[48,482],[48,220],[cx-60,220]]);
+  d.label(36,355,'i++','right');
+  d.label(36,472,'Tidak','right');
+  d.arrow(cx,507,cx,543); d.label(cx+6,522,'Ya','left');
+  d.io(cx,562,'Tampilkan mat[i][j]',230,36);
+  d.arrow(cx,580,cx,614);
+  d.process(cx,634,'j++',100,36);
+  d.poly([[cx+50,634],[340,634],[340,482],[cx+75,482]]);
+
+  /* done */
+  d.poly([[cx+65,565],[cx+65,596],[cx-65,596]]);
+  d.terminal(cx,590,'Return',130,36);
+})();
+
+/* ─────────────────────────────────────────────
+   MODULE 7 – SEGITIGA ATAS
+───────────────────────────────────────────── */
+(function(){
+  var d = new Drawer('mod7');
+  var cx=210;
+
+  d.terminal(cx,40,'SegitigaAtas(mat, n)',240,36);
+  d.arrow(cx,58,cx,100);
+  d.decision(cx,128,'baris == kolom ?',195,52);
+  d.arrow(cx+98,128,362,128); d.label(cx+98+18,119,'Tidak');
+  d.warning(385,128,'⚠  Bukan matriks\npersegi!',105,46);
+  d.arrow(385,105,385,58);
+  d.terminal(385,48,'Return',90,34);
+  d.arrow(cx,154,cx,196); d.label(cx+6,172,'Ya','left');
+  d.process(cx,220,'i = 0',120,36);
+  d.arrow(cx,238,cx,280);
+  d.decision(cx,308,'i < n ?',140,50);
+  d.poly([[cx+70,308],[355,308],[355,565],[cx+65,565]]);
+  d.label(357,435,'Tidak','left');
+  d.arrow(cx,333,cx,374); d.label(cx+6,350,'Ya','left');
+  d.process(cx,396,'j = i  (mulai dari diagonal)',240,36);
+  d.arrow(cx,414,cx,454);
+  d.decision(cx,482,'j < n ?',145,50);
+  /* Tidak → i++ */
+  d.poly([[cx-73,482],[48,482],[48,220],[cx-60,220]]);
+  d.label(36,355,'i++','right');
+  d.label(36,472,'Tidak','right');
+  d.arrow(cx,507,cx,543); d.label(cx+6,522,'Ya','left');
+  d.io(cx,562,'Tampilkan mat[i][j]',230,36);
+  d.arrow(cx,580,cx,614);
+  d.process(cx,634,'j++',100,36);
+  d.poly([[cx+50,634],[340,634],[340,482],[cx+73,482]]);
+
+  /* done */
+  d.poly([[cx+65,565],[cx+65,596],[cx-65,596]]);
+  d.terminal(cx,590,'Return',130,36);
+})();
+
+/* ─────────────────────────────────────────────
+   DOWNLOAD – Merge all canvases into one PNG
+───────────────────────────────────────────── */
+function downloadAll() {
+  var ids  = ['mainCanvas','mod1','mod2','mod3','mod4','mod5','mod6','mod7'];
+  var cvs  = ids.map(function(id){ return document.getElementById(id); });
+
+  /* Layout:
+     Row 0 : mainCanvas  (full width centered)
+     Row 1 : mod1 | mod2
+     Row 2 : mod3 | mod4
+     Row 3 : mod5 | mod6
+     Row 4 : mod7 (centered)
+  */
+  var PAD  = 30;
+  var GAP  = 16;
+  var mainW = cvs[0].width;
+  var mainH = cvs[0].height;
+  var modW  = cvs[1].width;
+  var colW  = modW;
+  var totalW= Math.max(mainW, colW*2+GAP) + PAD*2;
+
+  /* calculate row heights */
+  var rowH = [];
+  /* row 0 = mainCanvas */
+  rowH[0] = mainH;
+  /* rows 1-4 = module pairs */
+  var modPairs = [[1,2],[3,4],[5,6],[7]];
+  modPairs.forEach(function(pair, ri) {
+    var h = Math.max.apply(null, pair.map(function(i){ return cvs[i] ? cvs[i].height : 0; }));
+    rowH[ri+1] = h;
+  });
+
+  /* section title heights */
+  var titleH = 36;
+
+  var totalH = PAD * 2
+    + titleH + rowH[0] + GAP + PAD
+    + titleH + rowH[1] + GAP
+    + rowH[2] + GAP
+    + rowH[3] + GAP
+    + rowH[4]
+    + PAD;
+
+  var out = document.createElement('canvas');
+  out.width  = totalW;
+  out.height = totalH;
+  var g = out.getContext('2d');
+
+  /* white bg */
+  g.fillStyle = '#fff';
+  g.fillRect(0, 0, totalW, totalH);
+
+  /* draw text helper */
+  function title(txt, y) {
+    g.fillStyle = '#000';
+    g.font = 'bold 15px Arial';
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    g.fillText(txt, totalW/2, y);
+    /* underline */
+    var tw = g.measureText(txt).width;
+    g.strokeStyle = '#000';
+    g.lineWidth = 1;
+    g.beginPath();
+    g.moveTo(totalW/2-tw/2-10, y+11);
+    g.lineTo(totalW/2+tw/2+10, y+11);
+    g.stroke();
+  }
+
+  function drawBorder(x, y, w, h) {
+    g.strokeStyle = '#ccc';
+    g.lineWidth = 1;
+    g.strokeRect(x-4, y-4, w+8, h+8);
+  }
+
+  var curY = PAD;
+
+  /* Main header */
+  g.fillStyle = '#000';
+  g.font = 'bold 18px Arial';
+  g.textAlign = 'center';
+  g.textBaseline = 'middle';
+  g.fillText('FLOWCHART PROGRAM MATRIKS C++', totalW/2, curY+12);
+  curY += 36;
+
+  /* MAIN CANVAS */
+  title('FLOWCHART UTAMA — PROGRAM MENU MATRIKS', curY+14);
+  curY += titleH;
+  var mainX = (totalW - mainW) / 2;
+  drawBorder(mainX, curY, mainW, mainH);
+  g.drawImage(cvs[0], mainX, curY);
+  curY += mainH + GAP + PAD;
+
+  /* MODULES HEADER */
+  title('FLOWCHART MODUL-MODUL FUNGSI', curY+14);
+  curY += titleH;
+
+  /* Module pairs */
+  modPairs.forEach(function(pair, ri) {
+    var rh = rowH[ri+1];
+    if (pair.length === 2) {
+      var totalPairW = colW * 2 + GAP;
+      var startX = (totalW - totalPairW) / 2;
+      pair.forEach(function(mi, ci) {
+        var cv = cvs[mi];
+        var px = startX + ci*(colW+GAP);
+        drawBorder(px, curY, cv.width, cv.height);
+        g.drawImage(cv, px, curY);
+      });
+    } else {
+      /* single (mod7) – centered */
+      var cv = cvs[pair[0]];
+      var px = (totalW - cv.width) / 2;
+      drawBorder(px, curY, cv.width, cv.height);
+      g.drawImage(cv, px, curY);
+    }
+    curY += rh + GAP;
+  });
+
+  /* footer */
+  g.fillStyle = '#888';
+  g.font = '11px Arial';
+  g.textAlign = 'center';
+  g.textBaseline = 'middle';
+  g.fillText('Flowchart Program Matriks C++  ·  Standar Simbol ANSI/ISO', totalW/2, curY+10);
+
+  /* trigger download */
+  var a = document.createElement('a');
+  a.download = 'flowchart_matriks.png';
+  a.href = out.toDataURL('image/png');
+  a.click();
+}
+</script>
+</body>
+  </html>
